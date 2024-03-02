@@ -69,7 +69,7 @@ for line in headerScript.splitlines():
     if re.match("^setenv", line):
         params = utils.processSetEnv(line)
         key = params["key"]
-        if not "value" in params:
+        if "value" not in params:
             del env[key]
         else:
             value = params["value"]

@@ -27,10 +27,10 @@
     Footer structure
     |MAGIC|CRC1: SWAPPED HEADER CRC32|CRC2: SWAPPED BIN CRC32|FIRST 16 BYTES OF HEADER| - NORMAL
     |MAGIC|CRC1: SWAPPED HEADER CRC32|CRC2: SWAPPED MERGED CRC32|FIRST 16 BYTES OF HEADER| - XGIMI
-    |CRC0: SWAPPED BIN CRC32|MAGIC|CRC1: SWAPPED HEADER CRC32|CRC2: SWAPPED MERGED CRC32|FIRST 16 BYTES OF HEADER| - PB803
+    |CRC0: SWAPPED BIN CRC32|MAGIC|CRC1: SWAPPED HEADER CRC32|CRC2: SWAPPED MERGED CRC32|FIRST 16BYTES OF HEADER| -PB803
     # XGIMI uses HEADER+BIN+MAGIC+HEADER_CRC to calculate crc2
     # Software for TP.MS338E.PB803 mainboard uses HEADER+BIN+BIN_CRC+MAGIC+HEADER_CRC to calculate crc2
-    # To select use CRC_TYPE = [NORMAL, XGIMI, PB803] in the main config section. By default CRC_TYPE = NORMAL.
+    # To select use CRC_TYPE = [NORMAL, XGIMI, PB803] in the main config section. By default, CRC_TYPE = NORMAL.
 """
 
 import configparser
@@ -137,7 +137,6 @@ with open(headerPart, 'wb') as header:
     header.write(headerScriptPrefix.encode())
     header.write('\n'.encode())
 
-    #header.write('# Partitions'.encode())
     for sectionName in parts:
 
         part = config[sectionName]
@@ -145,7 +144,7 @@ with open(headerPart, 'wb') as header:
         create = utils.str2bool(utils.getConfigValue(part, 'create', ''))
         size = utils.getConfigValue(part, 'size', 'NOT_SET')
         erase = utils.str2bool(utils.getConfigValue(part, 'erase', ''))
-        type = utils.getConfigValue(part, 'type', 'NOT_SET')
+        part_type = utils.getConfigValue(part, 'type', 'NOT_SET')
         imageFile = utils.getConfigValue(part, 'imageFile', 'NOT_SET')
         chunkSize = utils.sizeInt(utils.getConfigValue(part, 'chunkSize', '0'))
         lzo = utils.str2bool(utils.getConfigValue(part, 'lzo', ''))
@@ -159,7 +158,7 @@ with open(headerPart, 'wb') as header:
         print("[i]      Create: {}".format(create))
         print("[i]      Size: {}".format(size))
         print("[i]      Erase: {}".format(erase))
-        print("[i]      Type: {}".format(type))
+        print("[i]      Type: {}".format(part_type))
         print("[i]      Image: {}".format(imageFile))
         print("[i]      LZO: {}".format(lzo))
         print("[i]      SPARSE: {}".format(sparse))
@@ -179,7 +178,7 @@ with open(headerPart, 'wb') as header:
             header.write('\n'.encode())
             directive.erase_p(name)
 
-        if type == 'partitionImage':
+        if part_type == 'partitionImage':
 
             header.write('\n'.encode())
             header.write('# File Partition: {}\n'.format(name).encode())
@@ -243,7 +242,7 @@ with open(headerPart, 'wb') as header:
                         print('[!] UNSUPPORTED: mmc write.p.continue')
                         quit()
 
-        if type == 'secureInfo':
+        if part_type == 'secureInfo':
             chunks = utils.splitFile(imageFile, tmpDir, chunksize=0)
             outputChunk = chunks[0]
 
@@ -258,7 +257,7 @@ with open(headerPart, 'wb') as header:
             utils.appendFile(outputChunk, binPart)
             directive.store_secure_info(name)
 
-        if type == 'nuttxConfig':
+        if part_type == 'nuttxConfig':
             chunks = utils.splitFile(imageFile, tmpDir, chunksize=0)
             outputChunk = chunks[0]
 
@@ -273,7 +272,7 @@ with open(headerPart, 'wb') as header:
             utils.appendFile(outputChunk, binPart)
             directive.store_nuttx_config(name)
 
-        if type == 'sboot':
+        if part_type == 'sboot':
             header.write('\n'.encode())
             header.write('# File Partition: {}\n'.format(name).encode())
 
@@ -291,7 +290,7 @@ with open(headerPart, 'wb') as header:
             utils.appendFile(outputChunk, binPart)
             directive.write_boot(size, DRAM_BUF_ADDR, emptySkip)
 
-        if type == 'multi2optee':
+        if part_type == 'multi2optee':
 
             header.write('\n'.encode())
             header.write('# File Partition: {}\n'.format(name).encode())
@@ -313,7 +312,7 @@ with open(headerPart, 'wb') as header:
             utils.appendFile(outputChunk, binPart)
             directive.write_multi2optee(name)
 
-        if type == 'inMemory':
+        if part_type == 'inMemory':
             chunks = utils.splitFile(imageFile, tmpDir, chunksize=0)
             outputChunk = chunks[0]
 

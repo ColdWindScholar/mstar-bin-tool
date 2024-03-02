@@ -19,12 +19,7 @@ if len(sys.argv) == 1:
         "Example: secure_partition.py ./pack/boot.img ./keys/AESbootKey ./keys/RSAboot_priv.txt ./keys/RSAboot_pub.txt ./pack/boot.img.aes ./pack/boot.signature.bin")
     quit()
 
-INPUT_FILE_NAME = sys.argv[1]
-AES_KEY = sys.argv[2]
-RSA_PRIVATE_KEY = sys.argv[3]
-RSA_PUBLIC_KEY = sys.argv[4]
-OUTPUT_FILE_NAME = sys.argv[5]
-OUTPUT_SIGNATURE_FILE_NAME = sys.argv[6]
+INPUT_FILE_NAME, AES_KEY, RSA_PRIVATE_KEY, RSA_PUBLIC_KEY, OUTPUT_FILE_NAME, OUTPUT_SIGNATURE_FILE_NAME = sys.argv[1:]
 
 # Aditional SubSecureInfoGen params
 BLOCK_SIZE_FOR_INTERLEAVE = 2097152

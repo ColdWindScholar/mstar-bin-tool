@@ -41,7 +41,7 @@ def bool2int(v):
 def getConfigValue(config, name, defValue):
     try:
         value = config[name]
-    except Exception as e:
+    except Exception:
         value = defValue
     return value
 
@@ -373,7 +373,7 @@ def directive(header, dramBufAddr, useHexValuesPrefix):
 
     # mmc write.p addr partition_name size [empty_skip:0-disable,1-enable]
     def write_p(name, size, memoryOffset=dramBufAddr, emptySkip=1):
-        if (useHexValuesPrefix):
+        if useHexValuesPrefix:
             header.write('mmc write.p 0x{} {} 0x{} {}\n'.format(memoryOffset, name, size, emptySkip).encode())
         else:
             header.write('mmc write.p {} {} {} {}\n'.format(memoryOffset, name, size, emptySkip).encode())
@@ -388,27 +388,27 @@ def directive(header, dramBufAddr, useHexValuesPrefix):
             header.write('store_secure_info {} {}\n'.format(name, memoryOffset).encode())
 
     def store_nuttx_config(name, memoryOffset=dramBufAddr):
-        if (useHexValuesPrefix):
+        if useHexValuesPrefix:
             header.write('store_nuttx_config {} 0x{}\n'.format(name, memoryOffset).encode())
         else:
             header.write('store_nuttx_config {} {}\n'.format(name, memoryOffset).encode())
 
     # mmc write[.boot|.gp] [bootpart|gppart] addr blk# size [empty_skip:0-disable,1-enable]
     def write_boot(size, memoryOffset=dramBufAddr, emptySkip=0):
-        if (useHexValuesPrefix):
+        if useHexValuesPrefix:
             header.write('mmc write.boot 1 0x{} 0 0x{} {}\n'.format(memoryOffset, size, emptySkip).encode())
         else:
             header.write('mmc write.boot 1 {} 0 {} {}\n'.format(memoryOffset, size, emptySkip).encode())
 
     #####
     def sparse_write(name, memoryOffset=dramBufAddr):
-        if (useHexValuesPrefix):
+        if useHexValuesPrefix:
             header.write('sparse_write mmc 0x{} {} $(filesize)\n'.format(memoryOffset, name).encode())
         else:
             header.write('sparse_write mmc {} {} $(filesize)\n'.format(memoryOffset, name).encode())
 
     def write_multi2optee(name, memoryOffset=dramBufAddr):
-        if (useHexValuesPrefix):
+        if useHexValuesPrefix:
             header.write('multi2optee 0x{} {} $(filesize)\n'.format(memoryOffset, name).encode())
         else:
             header.write('multi2optee {} {} $(filesize)\n'.format(memoryOffset, name).encode())
