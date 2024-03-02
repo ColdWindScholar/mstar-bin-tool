@@ -37,10 +37,10 @@ with open(inputFile, 'rb+') as f:
     while True:
         if (read_data := f.read(1)) != b'#':
             extra_header += read_data
-        elif (read_data := f.read(3)) != b'---':
+        elif (read_data := f.read(49)) != b'-------------USB Upgrade Bin Info----------------':
             extra_header += read_data
         else:
-            f.seek(f.tell() - 3)
+            f.seek(f.tell() - 49)
             f.write(f.read())
             break
 if extra_header:
