@@ -43,7 +43,7 @@ with open(inputFile, 'rb+') as f:
         else:
             f.seek(f.tell() - 49)
             print(f'[i] Found header at {f.tell()},Spliting File...')
-            with open(inputFile+".body", 'rb+') as f2:
+            with open(inputFile+".body", 'wb') as f2:
                 f.write(f.read())
             inputFile = inputFile+".body"
             break
