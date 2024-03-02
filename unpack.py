@@ -32,6 +32,7 @@ utils.createDirectory(outputDirectory)
 # Find header script
 # Header size is 16KB
 # Non used part is filled by 0xFF
+print("[i] Finding File Header")
 extra_header = b''
 with open(inputFile, 'rb+') as f:
     while True:
@@ -41,7 +42,10 @@ with open(inputFile, 'rb+') as f:
             extra_header += read_data
         else:
             f.seek(f.tell() - 49)
-            f.write(f.read())
+            print(f'[i] Found header at {f.tell()},Spliting File...')
+            with open(inputFile+".body", 'rb+') as f2:
+                f.write(f.read())
+            inputFile = inputFile+".body"
             break
 if extra_header:
     with open(os.path.join(outputDirectory, "~extra_header"), 'wb') as f:
