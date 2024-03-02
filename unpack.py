@@ -7,11 +7,10 @@ import utils
 DEBUG = False
 HEADER_SIZE = 16 * utils.KB  # Header size is always 16KB
 
-print("mstar-bin-tool unpack.py v.1.2_sha-man")
+print("mstar-bin-tool unpack.py v.1.2_sha-man (modify by https://github.com/ColdWindScholar/)")
 
 # Vars
 headerScript = ""
-headerScriptFound = False
 counter = {}
 env = {}  # Environment variables, set by setenv command
 
@@ -25,10 +24,8 @@ if not os.path.exists(inputFile):
     print("No such file: {}".format(inputFile))
     quit()
 
-if len(sys.argv) == 3:
-    outputDirectory = sys.argv[2]
-else:
-    outputDirectory = 'unpacked'
+
+outputDirectory = sys.argv[2] if len(sys.argv) == 3 else 'unpacked'
 
 # Create output directory
 utils.createDirectory(outputDirectory)
@@ -40,12 +37,10 @@ print("[i] Analizing header ...")
 header = utils.loadPart(inputFile, 0, HEADER_SIZE)
 utils.copyPart(inputFile, os.path.join(outputDirectory, "~header"), 0, HEADER_SIZE)
 
-offset = header.find('\xff'.encode(encoding='iso-8859-1'))
+offset = header.find(b'\xff')
 if offset != -1:
     headerScript = header[:offset].decode()
-    headerScriptFound = True
-
-if not headerScriptFound:
+else:
     print("[!] Could not find header script!")
     quit()
 
@@ -59,7 +54,7 @@ with open(os.path.join(outputDirectory, "~header_script.sh"), "w") as f:
 
 # Parse script
 print("[i] Parsing script ...")
-sparseList = list()
+sparseList = []
 # Supporting filepartload, mmc, store_secure_info, store_nuttx_config
 for line in headerScript.splitlines():
 
