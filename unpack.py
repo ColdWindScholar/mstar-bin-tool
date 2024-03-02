@@ -32,24 +32,8 @@ utils.createDirectory(outputDirectory)
 # Find header script
 # Header size is 16KB
 # Non used part is filled by 0xFF
-print("[i] Finding File Header")
-extra_header = b''
-with open(inputFile, 'rb+') as f:
-    while True:
-        if (read_data := f.read(1)) != b'#':
-            extra_header += read_data
-        elif (read_data := f.read(49)) != b'-------------USB Upgrade Bin Info----------------':
-            extra_header += read_data
-        else:
-            f.seek(f.tell() - 49)
-            print(f'[i] Found header at {f.tell()},Spliting File...')
-            with open(inputFile+".body", 'wb') as f2:
-                f.write(f.read())
-            inputFile = inputFile+".body"
-            break
-if extra_header:
-    with open(os.path.join(outputDirectory, "~extra_header"), 'wb') as f:
-        f.write(extra_header)
+
+
 print("[i] Analizing header ...")
 header = utils.loadPart(inputFile, 0, HEADER_SIZE)
 utils.copyPart(inputFile, os.path.join(outputDirectory, "~header"), 0, HEADER_SIZE)
