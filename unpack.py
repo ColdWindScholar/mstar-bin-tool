@@ -24,7 +24,6 @@ if not os.path.exists(inputFile):
     print("No such file: {}".format(inputFile))
     quit()
 
-
 outputDirectory = sys.argv[2] if len(sys.argv) == 3 else 'unpacked'
 
 # Create output directory
@@ -33,6 +32,20 @@ utils.createDirectory(outputDirectory)
 # Find header script
 # Header size is 16KB
 # Non used part is filled by 0xFF
+extra_header = b''
+with open(inputFile, 'rb+') as f:
+    while True:
+        if (read_data := f.read(1)) != b'#':
+            extra_header += read_data
+        elif (read_data := f.read(3)) != b'---':
+            extra_header += read_data
+        else:
+            f.seek(f.tell() - 3)
+            f.write(f.read())
+            break
+if extra_header:
+    with open(os.path.join(outputDirectory, "~extra_header"), 'wb') as f:
+        f.write(extra_header)
 print("[i] Analizing header ...")
 header = utils.loadPart(inputFile, 0, HEADER_SIZE)
 utils.copyPart(inputFile, os.path.join(outputDirectory, "~header"), 0, HEADER_SIZE)
@@ -181,7 +194,7 @@ for line in headerScript.splitlines():
 for partName in sparseList:
     print("[i] Sparse: converting {}_sparse.* to {}.img".format(partName, partName))
     sparseFiles = os.path.join(outputDirectory, partName + '_sparse.*')
-    sparseFilesConv = utils.convertInputSparseName(sparseFiles)
+    sparseFilesConv = sparseFiles.replace("\\", "/")
     outputImgFile = os.path.join(outputDirectory, partName + ".img")
     utils.sparse_to_img(sparseFilesConv, outputImgFile)
     os.system('del ' + sparseFiles)

@@ -334,11 +334,6 @@ def generateFileNameSparse(outputDirectory, part):
     return fileName
 
 
-def convertInputSparseName(filename):
-    filename = filename.replace("\\", "/")
-    return filename
-
-
 def directive(header, dramBufAddr, useHexValuesPrefix):
     def filepartload(filename, offset, size, memoryOffset=dramBufAddr):
         if useHexValuesPrefix:
