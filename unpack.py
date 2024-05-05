@@ -21,7 +21,7 @@ if len(sys.argv) == 1:
 
 inputFile = sys.argv[1]
 if not os.path.exists(inputFile):
-    print("No such file: {}".format(inputFile))
+    print(f"No such file: {inputFile}")
     quit()
 
 outputDirectory = sys.argv[2] if len(sys.argv) == 3 else 'unpacked'
