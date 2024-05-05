@@ -145,7 +145,7 @@ def main(inputFile, outputDirectory='unpacked'):
                                                                                      outputLzoFile))
                     utils.copyPart(inputFile, outputLzoFile, int(offset, 16), int(size, 16))
                     # unpack .lzo -> .img
-                    print("[i]     Unpacking LZO (Please be patient) {} -> {}".format(outputLzoFile, outputImgFile))
+                    print(f"[i]     Unpacking LZO (Please be patient) {outputLzoFile} -> {outputImgFile}")
                     utils.unlzo(outputLzoFile, outputImgFile)
                     # delete .lzo
                     os.remove(outputLzoFile)
