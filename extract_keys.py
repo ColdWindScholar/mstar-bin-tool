@@ -140,7 +140,7 @@ utils.createDirectory(outFolder)
 
 # Get the key bank section and store it
 outEncKeyBankFile = os.path.join(outFolder, 'key_bank.bin')
-print("[i] Save mstar key bank to {}".format(outEncKeyBankFile))
+print(f"[i] Save mstar key bank to {outEncKeyBankFile}")
 utils.copyPart(mboot, outEncKeyBankFile, offset, size)
 
 # Unpack the key bank to key bank structure
