@@ -41,7 +41,7 @@ def main(inputFile, outputDirectory='unpacked'):
         print(headerScript)
 
     # Save the script
-    print("[i] Saving header script to " + os.path.join(outputDirectory, "~header_script.sh") + " ...")
+    print(f"[i] Saving header script to {os.path.join(outputDirectory, '~header_script.sh')} ...")
     with open(os.path.join(outputDirectory, "~header_script.sh"), "w") as f:
         f.write(headerScript)
 
