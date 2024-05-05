@@ -95,7 +95,7 @@ def sparse_split(file, destdir, chunksize):
     # Split to chunks
     src = os.path.join(destdir, name + ext)
     dest = os.path.join(destdir, name + "_sparse")
-    os.system('bin\\sparse\\simg2simg.exe' + ' {} {} {}'.format(src, dest, chunksize))
+    os.system(f'bin\\sparse\\simg2simg.exe {src} {dest} {chunksize}')
     namesList = list(filter(lambda s: s.startswith(name + '_sparse'), os.listdir(destdir)))
     for name in namesList:
         chunks.append(os.path.join(destdir, name))
@@ -157,22 +157,22 @@ def alignFile(file, base=0x1000):
 # if NT then use ./bin/lzo.exe
 def unlzo(src, dest):
     lzop = 'bin\\win32\\lzop.exe' if os.name == 'nt' else 'bin/linux-x86/lzop'
-    os.system(lzop + ' -o {} -d {}'.format(dest, src))
+    os.system(f'{lzop} -o {dest} -d {src}')
 
 
 # lzo
 # if NT then use ./bin/lzo.exe
 def lzo(src, dest):
     lzop = 'bin\\win32\\lzop.exe' if os.name == 'nt' else 'bin/linux-x86/lzop'
-    os.system(lzop + ' -o {} -1 {}'.format(dest, src))
+    os.system(f'{lzop} -o {dest} -1 {src}')
 
 
 def sparse_to_img(src, dest):
-    os.system('bin\\sparse\\simg2img.exe' + ' {} {}'.format(src, dest))
+    os.system(f'bin\\sparse\\simg2img.exe {src} {dest}')
 
 
 def img_to_sparse(src, dest):
-    os.system('bin\\sparse\\img2simg.exe' + ' {} {}'.format(src, dest))
+    os.system(f'bin\\sparse\\img2simg.exe {src} {dest}')
 
 
 # Calculate crc32

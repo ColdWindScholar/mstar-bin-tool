@@ -165,22 +165,21 @@ for line in headerScript.splitlines():
                 outputChunkImgFile = os.path.join(outputDirectory, params["partition_name"] + str(
                     counter[params["partition_name"]]) + ".img")
                 # save .lzo
-                print("[i] Partition: {}\tOffset: {}\tSize {} ({}) -> {}".format(params["partition_name"], offset, size,
-                                                                                 utils.sizeStr(int(size, 16)),
-                                                                                 outputChunkLzoFile))
+                print(
+                    f"[i] Partition: {params['partition_name']}\tOffset: {offset}\tSize {size} ({utils.sizeStr(int(size, 16))}) -> {outputChunkLzoFile}")
                 utils.copyPart(inputFile, outputChunkLzoFile, int(offset, 16), int(size, 16))
                 # unpack chunk .lzo -> .img
                 print(
-                    "[i]     Unpacking LZO (Please be patient) {} -> {}".format(outputChunkLzoFile, outputChunkImgFile))
+                    f"[i]     Unpacking LZO (Please be patient) {outputChunkLzoFile} -> {outputChunkImgFile}")
                 utils.unlzo(outputChunkLzoFile, outputChunkImgFile)
                 # append the chunk to main .img
-                print("[i]     {} append to {}".format(outputChunkImgFile, outputImgFile))
+                print(f"[i]     {outputChunkImgFile} append to {outputImgFile}")
                 utils.appendFile(outputChunkImgFile, outputImgFile)
                 # delete chunk
                 os.remove(outputChunkLzoFile)
                 os.remove(outputChunkImgFile)
 for partName in sparseList:
-    print("[i] Sparse: converting {}_sparse.* to {}.img".format(partName, partName))
+    print(f"[i] Sparse: converting {partName}_sparse.* to {partName}.img")
     sparseFiles = os.path.join(outputDirectory, partName + '_sparse.*')
     sparseFilesConv = sparseFiles.replace("\\", "/")
     outputImgFile = os.path.join(outputDirectory, partName + ".img")
