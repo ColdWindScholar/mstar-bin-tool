@@ -189,7 +189,7 @@ def crc32(file):
 # filepartload 0x20200000 LetvUpgrade938.bin $(imageOffset) $(imageSize)
 # So we replace it to filepartload 0x20200000 LetvUpgrade938.bin 0x4000 0x13800
 def applyEnv(line, env):
-    keys = re.findall('\$\((\w+)\)', line)
+    keys = re.findall('\\$\\((\\w+)\\)', line)
     for key in keys:
         if key in env and env[key]:
             line = line.replace("$({})".format(key), env[key])
@@ -197,7 +197,7 @@ def applyEnv(line, env):
 
 
 def processSetEnv(line):
-    args = re.findall('([^\s]+)\s+([^\s]+)\s*(.*)', line)
+    args = re.findall('([^\\s]+)\\s+([^\\s]+)\\s*(.*)', line)
     args = args[0]
     if len(args) == 3:
         return {'cmd': args[0], 'key': args[1], 'value': args[2]}
@@ -206,7 +206,7 @@ def processSetEnv(line):
 
 
 def parceArgs(string):
-    return re.findall('([^\s]+)', string)
+    return re.findall('([^\\s]+)', string)
 
 
 def processFilePartLoad(line):
