@@ -62,7 +62,7 @@ def main(inputFile, outputDirectory='unpacked'):
             else:
                 value = params["value"]
                 env[key] = value
-                print("[i] Parsing setenv {} -> {}".format(key, value))
+                print(f"[i] Parsing setenv {key} -> {value}")
 
         if re.match("^filepartload", line):
             line = utils.applyEnv(line, env)
