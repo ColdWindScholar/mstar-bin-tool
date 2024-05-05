@@ -97,16 +97,16 @@ headerScriptSuffix = config.get('HeaderScript', 'Suffix', raw=True)
 parts = list(filter(lambda s: s.startswith('part/'), config.sections()))
 
 print("\n")
-print("[i] Date: {:%d/%m/%Y %H:%M:%S}".format(today))
-print("[i] Firmware file name: {}".format(firmwareFileName))
-print("[i] Project folder: {}".format(projectFolder))
-print("[i] Use hex values: {}".format(useHexValuesPrefix))
-print("[i] Script firmware filename: {}".format(SCRIPT_FIRMWARE_FILE_NAME))
-print("[i] DRAM_BUF_ADDR: {}".format(DRAM_BUF_ADDR))
-print("[i] MAGIC_FOOTER: {}".format(MAGIC_FOOTER))
-print("[i] HEADER_SIZE: {}".format(HEADER_SIZE))
-print("[i] XGIMI_CRC: {}".format(XGIMI_CRC))
-print("[i] PB803_CRC: {}".format(PB803_CRC))
+print(f"[i] Date: {today:%d/%m/%Y %H:%M:%S}")
+print(f"[i] Firmware file name: {firmwareFileName}")
+print(f"[i] Project folder: {projectFolder}")
+print(f"[i] Use hex values: {useHexValuesPrefix}")
+print(f"[i] Script firmware filename: {SCRIPT_FIRMWARE_FILE_NAME}")
+print(f"[i] DRAM_BUF_ADDR: {DRAM_BUF_ADDR}")
+print(f"[i] MAGIC_FOOTER: {MAGIC_FOOTER}")
+print(f"[i] HEADER_SIZE: {HEADER_SIZE}")
+print(f"[i] XGIMI_CRC: {XGIMI_CRC}")
+print(f"[i] PB803_CRC: {PB803_CRC}")
 
 # Create working directory
 print('[i] Create working directory ...')
@@ -154,16 +154,16 @@ with open(headerPart, 'wb') as header:
 
         print("\n")
         print("[i] Processing partition")
-        print("[i]      Name: {}".format(name))
-        print("[i]      Create: {}".format(create))
-        print("[i]      Size: {}".format(size))
-        print("[i]      Erase: {}".format(erase))
-        print("[i]      Type: {}".format(part_type))
-        print("[i]      Image: {}".format(imageFile))
-        print("[i]      LZO: {}".format(lzo))
-        print("[i]      SPARSE: {}".format(sparse))
-        print("[i]      Memory Offset: {}".format(memoryOffset))
-        print("[i]      Empty Skip: {}".format(emptySkip))
+        print(f"[i]      Name: {name}")
+        print(f"[i]      Create: {create}")
+        print(f"[i]      Size: {size}")
+        print(f"[i]      Erase: {erase}")
+        print(f"[i]      Type: {part_type}")
+        print(f"[i]      Image: {imageFile}")
+        print(f"[i]      LZO: {lzo}")
+        print(f"[i]      SPARSE: {sparse}")
+        print(f"[i]      Memory Offset: {memoryOffset}")
+        print(f"[i]      Empty Skip: {emptySkip}")
 
         if lzo & sparse:
             print('[!] CONFIG ERROR: you cannot use both LZO and SPARSE for one partition')
@@ -181,7 +181,7 @@ with open(headerPart, 'wb') as header:
         if part_type == 'partitionImage':
 
             header.write('\n'.encode())
-            header.write('# File Partition: {}\n'.format(name).encode())
+            header.write(f'# File Partition: {name}\n'.encode())
 
             if sparse:
                 print('[i]      Converting img to sparse ...')
@@ -219,7 +219,7 @@ with open(headerPart, 'wb') as header:
                 print('[i]      Align chunk')
                 utils.alignFile(outputChunk)
 
-                print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+                print(f'[i]      Append: {outputChunk} -> {binPart}')
                 utils.appendFile(outputChunk, binPart)
 
                 if lzo:
@@ -253,7 +253,7 @@ with open(headerPart, 'wb') as header:
             print('[i]      Align')
             utils.alignFile(outputChunk)
 
-            print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+            print(f'[i]      Append: {outputChunk} -> {binPart}')
             utils.appendFile(outputChunk, binPart)
             directive.store_secure_info(name)
 
@@ -268,13 +268,13 @@ with open(headerPart, 'wb') as header:
             print('[i]      Align')
             utils.alignFile(outputChunk)
 
-            print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+            print(f'[i]      Append: {outputChunk} -> {binPart}')
             utils.appendFile(outputChunk, binPart)
             directive.store_nuttx_config(name)
 
         if part_type == 'sboot':
             header.write('\n'.encode())
-            header.write('# File Partition: {}\n'.format(name).encode())
+            header.write(f'# File Partition: {name}\n'.encode())
 
             chunks = utils.splitFile(imageFile, tmpDir, chunksize=0)
             outputChunk = chunks[0]
@@ -286,14 +286,14 @@ with open(headerPart, 'wb') as header:
             print('[i]      Align')
             utils.alignFile(outputChunk)
 
-            print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+            print(f'[i]      Append: {outputChunk} -> {binPart}')
             utils.appendFile(outputChunk, binPart)
             directive.write_boot(size, DRAM_BUF_ADDR, emptySkip)
 
         if part_type == 'multi2optee':
 
             header.write('\n'.encode())
-            header.write('# File Partition: {}\n'.format(name).encode())
+            header.write(f'# File Partition: {name}\n'.encode())
 
             chunks = utils.splitFile(imageFile, tmpDir, chunksize=0)
             outputChunk = chunks[0]
@@ -308,7 +308,7 @@ with open(headerPart, 'wb') as header:
             print('[i]      Align')
             utils.alignFile(outputChunk)
 
-            print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+            print(f'[i]      Append: {outputChunk} -> {binPart}')
             utils.appendFile(outputChunk, binPart)
             directive.write_multi2optee(name)
 
@@ -323,7 +323,7 @@ with open(headerPart, 'wb') as header:
             print('[i]      Align')
             utils.alignFile(outputChunk)
 
-            print('[i]      Append: {} -> {}'.format(outputChunk, binPart))
+            print(f'[i]      Append: {outputChunk} -> {binPart}')
             utils.appendFile(outputChunk, binPart)
 
         if 'command' in part:
@@ -357,19 +357,19 @@ if XGIMI_CRC:
     with open(mergedPart, 'ab') as part:
         # If PB803 CRC type selected then adding BIN_CRC to the merged file
         if PB803_CRC:
-            print('[i]      Bin CRC   : 0x{:02X}'.format(binCRC))
+            print(f'[i]      Bin CRC   : 0x{binCRC:02X}')
             part.write(struct.pack('L', binCRC))
-        print('[i]      Magic     : {}'.format(MAGIC_FOOTER))
+        print(f'[i]      Magic     : {MAGIC_FOOTER}')
         part.write(MAGIC_FOOTER.encode())
-        print('[i]      Header CRC: 0x{:02X}'.format(headerCRC))
+        print(f'[i]      Header CRC: 0x{headerCRC:02X}')
         part.write(struct.pack('L', headerCRC))
 
     # Step #2 Calculate CRC2
     mergedCRC = utils.crc32(mergedPart)
     with open(footerPart, 'wb') as footer:
-        print('[i]      Merged CRC: 0x{:02X}'.format(mergedCRC))
+        print(f'[i]      Merged CRC: 0x{mergedCRC:02X}')
         footer.write(struct.pack('L', mergedCRC))
-        print('[i]      First 16 bytes of header: {}'.format(header16bytes))
+        print(f'[i]      First 16 bytes of header: {header16bytes}')
         footer.write(header16bytes)
 
     print('[i] Merging parts ...')
@@ -381,13 +381,13 @@ else:
     binCRC = utils.crc32(binPart)
     header16bytes = utils.loadPart(headerPart, 0, 16)
     with open(footerPart, 'wb') as footer:
-        print('[i]      Magic: {}'.format(MAGIC_FOOTER))
+        print(f'[i]      Magic: {MAGIC_FOOTER}')
         footer.write(MAGIC_FOOTER.encode())
-        print('[i]      Header CRC: 0x{:02X}'.format(headerCRC))
+        print(f'[i]      Header CRC: 0x{headerCRC:02X}')
         footer.write(struct.pack('L', headerCRC))  # struct.pack('L', data) <- returns byte swapped data
-        print('[i]      Bin CRC: 0x{:02X}'.format(binCRC))
+        print(f'[i]      Bin CRC: 0x{binCRC:02X}')
         footer.write(struct.pack('L', binCRC))
-        print('[i]      First 16 bytes of header: {}'.format(header16bytes))
+        print(f'[i]      First 16 bytes of header: {header16bytes}')
         footer.write(header16bytes)
 
     print('[i] Merging header, bin, footer ...')
